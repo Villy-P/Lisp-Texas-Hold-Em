@@ -1,5 +1,5 @@
-(defclass Player ()
-    ((name :accessor player-name)))
+((defclass Player ()
+    ((name :accessor player-name))))
 
 (defvar main-player (make-instance 'Player))
 (defvar computer-num 0)
@@ -16,5 +16,5 @@
     (dotimes (i computer-num)
         (setf (aref computers i) (make-instance 'Player))
         (setf (player-name (aref computers i)) (format nil "Computer #~d~%" i)))
-        
+
 (main)
