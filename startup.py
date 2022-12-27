@@ -2,6 +2,8 @@ import pyautogui
 
 screenWidth, screenHeight = pyautogui.size()
 pyautogui.click(screenHeight - 50, screenWidth / 2)
+pyautogui.write('(SB-EXT:EXIT)')
+pyautogui.press('enter')
 pyautogui.write('C:\SBCL\sbcl.exe')
 pyautogui.press('enter')
 pyautogui.write('(require "asdf")')
