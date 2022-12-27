@@ -1,3 +1,1 @@
-(defsystem "project"
-  :components (
-               (:file "main")))
+(defsystem "project" :components ((:file "main")))
