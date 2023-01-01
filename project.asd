@@ -1,1 +1,5 @@
-(defsystem "project" :components ((:file "main")))
+(defsystem "project" :components ((:file "player") 
+                                  (:file "array-utils")
+                                  (:file "card")
+                                  (:file "deck")
+                                  (:file "main")))
