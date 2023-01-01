@@ -5,10 +5,10 @@
 
 ; ARRAY UTILITIES
 (defun remove-last (sequence)
-    (defvar new-array (make-array '(- (length sequence) 1)))
-    (dotimes (i (- (length sequence) 1))
-        (setf (aref new-array i (aref sequence i))))
-    (setf sequence new-array))
+    (reverse (cdr (reverse sequence))))
+
+(defun get-last (sequence)
+    (first (last sequence)))
 
 ; SUITS AND RANKS
 (defvar suits (make-array `(4)
