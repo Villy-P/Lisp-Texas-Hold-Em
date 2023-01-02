@@ -3,4 +3,4 @@
     (reverse (cdr (reverse sequence))))
 
 (defun get-last (sequence)
-    (first (last sequence)))
+    (car (last sequence)))

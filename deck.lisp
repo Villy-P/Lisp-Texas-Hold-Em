@@ -6,14 +6,14 @@
                         "J" "Q" "K" "A")))
 
 ; ; DECK
-(defvar deck (make-array `(52)))
+(defvar deck `())
 
 ; CREATE DECK
 (dotimes (i 13)
     (dotimes (j 4)
-        (setf (aref deck (+ (* 4 i) j)) (make-instance 'card))
-        (setf (card-rank (aref deck (+ (* 4 i) j))) (aref ranks i))
-        (setf (card-suit (aref deck (+ (* 4 i) j))) (aref suits j))))
+        (setq deck (append deck (list (make-instance 'card))))
+        (setf (card-rank (car (last deck))) (aref ranks i))
+        (setf (card-suit (car (last deck))) (aref suits j))))
 
 ; SHUFFLE DECK
 (defun shuffle (sequence)
