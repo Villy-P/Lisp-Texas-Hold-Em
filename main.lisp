@@ -2,7 +2,7 @@
 (setf (player-hand main-player) (make-array `(2)))
 
 (defvar computer-num 0)
-(defvar computers (make-array '(8)))
+(defvar computers (list))
 
 (defun main ()
     (setf deck (shuffle deck))
@@ -14,8 +14,8 @@
         (finish-output)(setf computer-num (read))
         (when (and (> computer-num 0) (< computer-num 9)) (return computer-num)))
     (dotimes (i computer-num)
-        (setf (aref computers i) (make-instance 'player))
-        (setf (player-name (aref computers i)) (format nil "Computer #~d~%" i))
-        (setf (player-hand (aref computers i)) (list))))
+        (setq computers (append computers (list (make-instance 'player))))
+        (setf (player-name (nth i computers)) (format nil "Computer #~d~%" i))
+        (setf (player-hand (nth i computers )) (list))))
 
 (main)
