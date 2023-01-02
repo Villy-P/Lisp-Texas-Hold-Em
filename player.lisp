@@ -1,4 +1,4 @@
-; PLAYER CLASS
 (defclass player ()
     ((name :accessor player-name)
-     (hand :accessor player-hand)))
+     (hand :accessor player-hand)
+     (chips :accessor player-chips)))
