@@ -1,5 +1,7 @@
-(defsystem "project" :components ((:file "player") 
-                                  (:file "array-utils")
-                                  (:file "card")
-                                  (:file "deck")
-                                  (:file "main")))
+(defsystem "project" 
+    :components ((:file "random")
+                 (:file "card") 
+                 (:file "array-utils")
+                 (:file "deck")
+                 (:file "player")
+                 (:file "main")))
