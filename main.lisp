@@ -9,25 +9,26 @@
 (defvar current-player nil)
 
 (defvar current-bet 10)
+(defvar pot-amount 15)
 
-(defun getLeft (i)
-    (when (eq i 0) (return-from getLeft (get-last computers)))
-    (when (eq i 1) (return-from getLeft main-player))
+(defun get-left (i)
+    (when (eq i 0) (return-from get-left (get-last computers)))
+    (when (eq i 1) (return-from get-left main-player))
     (nth (- i 2) computers))
 
-(defun getLeftNum (i)
-    (when (eq i 0) (return-from getLeftNum computer-num))
-    (when (eq i 1) (return-from getLeftNum 0))
+(defun get-left-num (i)
+    (when (eq i 0) (return-from get-left-num computer-num))
+    (when (eq i 1) (return-from get-left-num 0))
     (- i 1))
 
-(defun getTwoLeft (i)
-    (when (eq i 0) (return-from getTwoLeft (get-second-last computers)))
-    (when (eq i 1) (return-from getTwoLeft (get-last computers)))
-    (when (eq i 2) (return-from getTwoLeft main-player))
+(defun get-two-left (i)
+    (when (eq i 0) (return-from get-two-left (get-second-last computers)))
+    (when (eq i 1) (return-from get-two-left (get-last computers)))
+    (when (eq i 2) (return-from get-two-left main-player))
     (nth (- i 3) computers))
 
-(defun getCurrent (i)
-    (when (eq i 0) (return-from getCurrent main-player))
+(defun get-current (i)
+    (when (eq i 0) (return-from get-current main-player))
     (nth (- i 1) computers))
 
 (defun main ()
@@ -54,16 +55,16 @@
 
     ; 0 is main-player any other is index + 1 of computer-num
     (setq dealer-button-index (random-from-range 0 computer-num))
-    (setq current-player (getLeft (getLeftNum (getLeftNum dealer-button-index))))
+    (setq current-player (get-left (get-left-num (get-left-num dealer-button-index))))
     
     (terpri)
-    (setf (player-has-button (getCurrent dealer-button-index)) t)
-    (princ (format nil "~s got the dealer button" (player-name (getCurrent dealer-button-index))))
+    (setf (player-has-button (get-current dealer-button-index)) t)
+    (princ (format nil "~s got the dealer button" (player-name (get-current dealer-button-index))))
     (terpri)(princ (format nil 
         "~s put down 1 chip as the Small Blind and ~s put down 2 chips as the Big Blind"
-        (player-name (getLeft dealer-button-index)) (player-name (getTwoLeft dealer-button-index))))
-    (setf (player-chips (getLeft dealer-button-index)) (- (player-chips (getLeft dealer-button-index)) 5))
-    (setf (player-chips (getTwoLeft dealer-button-index)) (- (player-chips (getTwoLeft dealer-button-index)) 10))
+        (player-name (get-left dealer-button-index)) (player-name (get-two-left dealer-button-index))))
+    (setf (player-chips (get-left dealer-button-index)) (- (player-chips (get-left dealer-button-index)) 5))
+    (setf (player-chips (get-two-left dealer-button-index)) (- (player-chips (get-two-left dealer-button-index)) 10))
     (terpri)
 
     (terpri)(princ "The dealer hands you and the computers each two cards.")
