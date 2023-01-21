@@ -6,11 +6,19 @@
 (defvar computers (list))
 
 (defvar dealer-button-index nil)
+(defvar current-player nil)
+
+(defvar current-bet 10)
 
 (defun getLeft (i)
     (when (eq i 0) (return-from getLeft (get-last computers)))
     (when (eq i 1) (return-from getLeft main-player))
     (nth (- i 2) computers))
+
+(defun getLeftNum (i)
+    (when (eq i 0) (return-from getLeftNum computer-num))
+    (when (eq i 1) (return-from getLeftNum 0))
+    (- i 1))
 
 (defun getTwoLeft (i)
     (when (eq i 0) (return-from getTwoLeft (get-second-last computers)))
@@ -46,6 +54,7 @@
 
     ; 0 is main-player any other is index + 1 of computer-num
     (setq dealer-button-index (random-from-range 0 computer-num))
+    (setq current-player (getLeft (getLeftNum (getLeftNum dealer-button-index))))
     
     (terpri)
     (setf (player-has-button (getCurrent dealer-button-index)) t)
