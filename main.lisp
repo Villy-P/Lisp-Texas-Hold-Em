@@ -1,16 +1,3 @@
-(declaim (sb-ext:muffle-conditions sb-ext:compiler-note))
-
-(defvar *main-player* (make-instance 'player))
-
-(defvar *computer-num* 0)
-(defvar *computers* (list))
-
-(defvar *dealer-button-index* nil)
-(defvar *current-player* nil)
-
-(defvar *current-bet* 10)
-(defvar *pot-amount* 15)
-
 (defun get-left (i)
     (when (eq i 0) (return-from get-left (get-last *computers*)))
     (when (eq i 1) (return-from get-left *main-player*))
@@ -37,10 +24,13 @@
     (princ "Welcome to Texas Hold'em!")(terpri)
     (princ "What is your name? ")
     (finish-output)
+    (setq *main-player* (make-instance 'player))
     (setf (player-name *main-player*) (read))
     (setf (player-hand *main-player*) (list))
     (setf (player-chips *main-player*) 2000)
+    (setf (player-is-comp *main-player*) nil)
     (setf (player-has-button *main-player*) nil)
+    (setf (player-has-folded *main-player*) nil)
     (loop
         (princ "How many people do you want to play against? (limit 2 max 8) ")
         (finish-output)(setf *computer-num* (read))
@@ -50,7 +40,9 @@
         (setf (player-name (nth i *computers*)) (format nil "Computer #~d" i))
         (setf (player-hand (nth i *computers*)) (list))
         (setf (player-chips (nth i *computers*)) 2000)
+        (setf (player-is-comp (nth i *computers*)) t)
         (setf (player-has-button (nth i *computers*)) nil)
+        (setf (player-has-folded (nth i *computers*)) nil)
         (give-player-cards (nth i *computers*) 2))
 
     ; 0 is *main-player* any other is index + 1 of *computer-num*
@@ -67,11 +59,10 @@
     (setf (player-chips (get-two-left *dealer-button-index*)) (- (player-chips (get-two-left *dealer-button-index*)) 10))
     (terpri)
 
-    (terpri)(princ "The dealer hands you and the *computers* each two cards.")
+    (terpri)(princ "The dealer hands you and the computers each two cards.")
     (give-player-cards *main-player* 2)
     (terpri)(princ "You got:")(terpri)
     (print-player-cards *main-player*)
-
 
     (finish-output))
 

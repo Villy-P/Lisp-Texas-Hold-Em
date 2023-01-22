@@ -1,5 +1,6 @@
 (defsystem "project" 
-    :components ((:file "random")
+    :components ((:file "variables")
+                 (:file "random")
                  (:file "card") 
                  (:file "array-utils")
                  (:file "deck")
