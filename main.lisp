@@ -48,21 +48,33 @@
     ; 0 is *main-player* any other is index + 1 of *computer-num*
     (setq *dealer-button-index* (random-from-range 0 *computer-num*))
     (setq *current-player* (get-left (get-left-num (get-left-num *dealer-button-index*))))
+    (setq *current-player-index* (get-left-num (get-left-num (get-left-num *dealer-button-index*))))
     
     (terpri)
     (setf (player-has-button (get-current *dealer-button-index*)) t)
     (princ (format nil "~s got the dealer button" (player-name (get-current *dealer-button-index*))))
     (terpri)(princ (format nil 
-        "~s put down 1 chip as the Small Blind and ~s put down 2 chips as the Big Blind"
+        "~s put down 5 chips as the Small Blind and ~s put down 10 chips as the Big Blind"
         (player-name (get-left *dealer-button-index*)) (player-name (get-two-left *dealer-button-index*))))
     (setf (player-chips (get-left *dealer-button-index*)) (- (player-chips (get-left *dealer-button-index*)) 5))
     (setf (player-chips (get-two-left *dealer-button-index*)) (- (player-chips (get-two-left *dealer-button-index*)) 10))
+    (setf *greatest-better* (get-two-left *dealer-button-index*))
     (terpri)
 
     (terpri)(princ "The dealer hands you and the computers each two cards.")
     (give-player-cards *main-player* 2)
     (terpri)(princ "You got:")(terpri)
     (print-player-cards *main-player*)
+
+    (loop
+        (terpri)(terpri)
+        (princ (format nil "It is ~s's turn." (player-name *current-player*)))
+        (terpri)(if (eql (player-is-comp *current-player*) t)
+            (computer-play *current-player* 0)
+            (player-play *main-player* 0))
+        (setf *current-player-index* (get-left-num *current-player-index*))
+        (setf *current-player* (get-left *current-player-index*))
+        (when (eql (player-name *current-player*) (player-name *greatest-better*)) (return *current-player*)))
 
     (finish-output))
 
