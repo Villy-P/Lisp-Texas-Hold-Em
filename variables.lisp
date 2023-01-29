@@ -14,6 +14,8 @@
 (defvar *current-bet* 10)
 (defvar *pot-amount* 15)
 
+(defvar *last-player-called* nil)
+
 (defun display-middle-cards ()
     (dotimes (i (length *middle-cards*))
         (princ (format nil "A ~s of ~s" 

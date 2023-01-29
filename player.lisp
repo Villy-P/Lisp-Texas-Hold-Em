@@ -13,7 +13,8 @@
      (chips :accessor player-chips)
      (is-comp :accessor player-is-comp)
      (has-button :accessor player-has-button)
-     (has-folded :accessor player-has-folded)))
+     (has-folded :accessor player-has-folded)
+     (has-folded :accessor player-has-checked)))
 
 (defmethod print-player-cards ((object player))
     (dotimes (i (length (player-hand object)))
@@ -37,6 +38,14 @@
     (setf *pot-amount* (+ *pot-amount* *current-bet*))
     (setf (player-chips object) (- (player-chips object) *current-bet*))
     (all-folded))
+
+(defmethod check ((object player))
+    (when *last-player-called*
+        (princ (format nil "~s checked." (player-name object)))
+        (setf (player-has-checked object) t)
+        (setf *last-player-called* t)))
+    (when (not *last-player-called*)
+        (princ "You cannot check."))
 
 (defmethod pre-game-computer ((object player))
     (if (< (player-chips object) *current-bet*) 
@@ -76,5 +85,24 @@
     (when (eql choice 2) (fold object))
     (when (and (eql choice 3)) (raise-player object))))
 
+(defmethod post-flop-player ((object player))
+    (let ((choice 0))
+    (princ (format nil "You have ~s chips." (player-chips object)))(terpri)
+    (terpri)(princ (format nil "The current bet is ~s chips." *current-bet*))
+    (terpri)(princ "You have these cards:")(terpri)
+    (print-player-cards *main-player*)
+    (princ "1: CALL")(terpri)
+    (princ "2: FOLD")(terpri)
+    (princ "3: RAISE")(terpri)
+    (princ "4: CHECK")(terpri)
+    (loop
+        (princ ">>> ")
+        (finish-output)(setf choice (read))
+        (when (and (> choice 0) (< choice 5)) (return choice)))
+    (when (eql choice 1) (call object))
+    (when (eql choice 2) (fold object))
+    (when (eql choice 3) (raise-player object))))
+
 (defmethod player-play ((object player) turn)
-    (when (eql turn 0) (pre-game-player object)))
+    (when (eql turn 0) (pre-game-player object))
+    (when (eql turn 1) (post-flop-player object)))

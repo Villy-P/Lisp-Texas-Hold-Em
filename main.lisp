@@ -31,6 +31,7 @@
     (setf (player-is-comp *main-player*) nil)
     (setf (player-has-button *main-player*) nil)
     (setf (player-has-folded *main-player*) nil)
+    (setf (player-has-checked *main-player*) nil)
     (loop
         (princ "How many people do you want to play against? (limit 2 max 8) ")
         (finish-output)(setf *computer-num* (read))
@@ -43,6 +44,7 @@
         (setf (player-is-comp (nth i *computers*)) t)
         (setf (player-has-button (nth i *computers*)) nil)
         (setf (player-has-folded (nth i *computers*)) nil)
+        (setf (player-has-checked (nth i *computers*)) nil)
         (give-player-cards (nth i *computers*) 2))
 
     ; 0 is *main-player* any other is index + 1 of *computer-num*
@@ -68,7 +70,7 @@
 
     (loop
         (terpri)(terpri)
-        (when (not (has-folded *current-player*)) 
+        (when (not (player-has-folded *current-player*)) 
         (princ (format nil "It is ~s's turn." (player-name *current-player*)))
         (terpri)(if (eql (player-is-comp *current-player*) t)
             (computer-play *current-player* 0)
@@ -78,18 +80,26 @@
         (when (eql (player-name *current-player*) (player-name *greatest-better*)) (return *current-player*))))
 
     (terpri)(terpri)(princ "It is time for the flop.")(terpri)
-    (setq *middle-cards* (append *middle-cards* (list (get-last deck))))
-    (setf deck (remove-last deck))
-    (setq *middle-cards* (append *middle-cards* (list (get-last deck))))
-    (setf deck (remove-last deck))
-    (setq *middle-cards* (append *middle-cards* (list (get-last deck))))
-    (setf deck (remove-last deck))
+    (dotimes (i 3)
+        (setq *middle-cards* (append *middle-cards* (list (get-last deck))))
+        (setf deck (remove-last deck)))
 
     (setq *current-player* (get-left *dealer-button-index*))
     (setq *current-player-index* (get-left-num *dealer-button-index*))
     (setq *greatest-better* (get-left-num *dealer-button-index*))
     
     (display-middle-cards)
+
+    (loop
+        (terpri)(terpri)
+        (when (and (not (player-has-folded *current-player*)) (not (player-has-checked *current-player*)))
+        (princ (format nil "It is ~s's turn." (player-name *current-player*)))
+        (terpri)(if (eql (player-is-comp *current-player*) t)
+            (computer-play *current-player* 1)
+            (player-play *main-player* 1))
+        (setf *current-player-index* (get-left-num *current-player-index*))
+        (setf *current-player* (get-left *current-player-index*))
+        (when (eql (player-name *current-player*) (player-name *greatest-better*)) (return *current-player*))))
 
     (finish-output))
 
