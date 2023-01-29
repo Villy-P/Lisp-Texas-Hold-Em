@@ -68,13 +68,28 @@
 
     (loop
         (terpri)(terpri)
+        (when (not (has-folded *current-player*)) 
         (princ (format nil "It is ~s's turn." (player-name *current-player*)))
         (terpri)(if (eql (player-is-comp *current-player*) t)
             (computer-play *current-player* 0)
             (player-play *main-player* 0))
         (setf *current-player-index* (get-left-num *current-player-index*))
         (setf *current-player* (get-left *current-player-index*))
-        (when (eql (player-name *current-player*) (player-name *greatest-better*)) (return *current-player*)))
+        (when (eql (player-name *current-player*) (player-name *greatest-better*)) (return *current-player*))))
+
+    (terpri)(terpri)(princ "It is time for the flop.")(terpri)
+    (setq *middle-cards* (append *middle-cards* (list (get-last deck))))
+    (setf deck (remove-last deck))
+    (setq *middle-cards* (append *middle-cards* (list (get-last deck))))
+    (setf deck (remove-last deck))
+    (setq *middle-cards* (append *middle-cards* (list (get-last deck))))
+    (setf deck (remove-last deck))
+
+    (setq *current-player* (get-left *dealer-button-index*))
+    (setq *current-player-index* (get-left-num *dealer-button-index*))
+    (setq *greatest-better* (get-left-num *dealer-button-index*))
+    
+    (display-middle-cards)
 
     (finish-output))
 
