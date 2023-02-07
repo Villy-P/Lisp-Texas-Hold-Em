@@ -125,6 +125,7 @@
     (terpri)(terpri)(princ "It is time for the river.")(terpri)
     (setq *middle-cards* (append *middle-cards* (list (get-last deck))))
     (setf deck (remove-last deck))
+    (display-middle-cards)
 
     (setq *current-player* (get-left *dealer-button-index*))
     (setq *current-player-index* (get-left-num *dealer-button-index*))
@@ -140,8 +141,6 @@
         (setf *current-player-index* (get-left-num *current-player-index*))
         (setf *current-player* (get-left *current-player-index*))
         (when (eql (player-name *current-player*) (player-name *greatest-better*)) (return *current-player*))))
-    
-    (display-middle-cards)
 
     (finish-output))
 

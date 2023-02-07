@@ -29,3 +29,20 @@
         (when (not (eql (card-value (nth i hand)) (+ (card-value (nth (- i 1) hand)) 1)))
             (return-from is-in-order nil)))
     (return-from is-in-order t))
+
+(defun all-in-suit (hand)
+    (let ((s (card-suit (nth 0 hand))))
+        (dotimes (i 7)
+            (when (not (eql s (card-suit (nth i hand))))
+                (return-from all-in-suit nil))))
+    (return-from all-in-suit t))
+
+; http://www.lee-mac.com/sublist.html
+
+(defun sublist ( lst idx len )
+    (cond
+        ((null lst) nil)
+        ((< 0  idx) (sublist (cdr lst) (1- idx) len))
+        ((null len) lst)
+        ((< 0  len) (cons (car lst) (sublist (cdr lst) idx (1- len)))))
+)
