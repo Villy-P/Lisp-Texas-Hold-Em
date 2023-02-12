@@ -1,8 +1,3 @@
-(defmethod end-game ()
-    (when (has-royal-flush *main-player*) (return-from end-game (end-game-text *main-player*)))
-    (dotimes (i *computer-num*)
-        (when has-royal-flush (nth i *computers*)) (return-from end-game (end-game-text (nth i *computers*)))))
-
 (defmethod all-folded ()
     (let ((total 0))
     (when (player-has-folded *main-player*) (setf total (+ total 1)))

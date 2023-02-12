@@ -16,7 +16,7 @@
     (let ((new-list (copy-list full-hand)))
         (dotimes (i (- (length full-hand) 1))
             (let ((min-index i))
-                (loop for j from (+ i 1) to (length full-hand) by 1 do
+                (loop for j from (+ i 1) to (- (length full-hand) 1) by 1 do
                     (when (< (card-value (nth j new-list)) (card-value (nth min-index new-list)))
                         (setf min-index j)))
         (let ((temp (nth min-index new-list)))
@@ -46,3 +46,10 @@
         ((null len) lst)
         ((< 0  len) (cons (car lst) (sublist (cdr lst) idx (1- len)))))
 )
+
+(defun num-of-n-in-list (n seq)
+    (let ((count 0))
+        (dotimes (i (length seq))
+            (when (eql (card-value (nth i seq)) n)
+                (setf count (+ count 1))))
+    (return-from num-of-n-in-list count)))

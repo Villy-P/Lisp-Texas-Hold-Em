@@ -142,6 +142,8 @@
         (setf *current-player* (get-left *current-player-index*))
         (when (eql (player-name *current-player*) (player-name *greatest-better*)) (return *current-player*))))
 
+    (end-game)
+
     (finish-output))
 
 (main)
